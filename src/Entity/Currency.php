@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Ramsey\Uuid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CurrencyRepository;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
@@ -18,11 +19,19 @@ class Currency
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $currency_code;
 
     #[ORM\Column(type: 'float')]
     private $exchange_rate;
+
+    public function __construct($name, $currency_code, $exchange_rate)
+    {
+        $this->id = Uuid::uuid4();
+        $this->name = $name;
+        $this->currency_code = $currency_code;
+        $this->exchange_rate = $exchange_rate;
+    }
 
     public function getId(): ?int
     {
